@@ -85,68 +85,54 @@ export default function Login() {
 
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-500 via-blue-300 to-blue-100 px-4">
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#f5f5f7] px-4 py-12">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-10 top-10 h-40 w-40 rounded-full bg-white/60 blur-3xl" />
+        <div className="absolute right-0 top-24 h-64 w-64 rounded-full bg-slate-200/60 blur-3xl" />
+        <div className="absolute bottom-10 left-1/3 h-52 w-52 rounded-full bg-white/70 blur-3xl" />
+      </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 40, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="relative mx-auto flex w-full max-w-lg items-center justify-center"
       >
-        <Card
-          className="
-          w-full 
-          max-w-xl 
-          lg:max-w-2xl 
-          rounded-3xl 
-          border border-blue-200/60 
-          bg-white/80 backdrop-blur-xl 
-          shadow-[0_30px_60px_rgba(37,99,235,0.25)]
-          transition-transform duration-300
-          hover:-translate-y-1
-        "
-        >
-
-          {/* Header */}
-          <CardHeader className="text-center space-y-4 pb-6">
-            <div className="flex justify-center">
-              <div className="h-16 w-16 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg">
-                <School size={32} />
-              </div>
+        <Card className="w-full rounded-3xl border border-slate-200/80 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.08)]">
+          <CardHeader className="space-y-3 px-8 pb-2 pt-8 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-900 text-white shadow-md">
+              <School size={26} />
             </div>
-
-            <CardTitle className="text-4xl font-bold text-blue-700">
-              {isSuperAdminLogin ? "Super Admin Login" : "Welcome"}
-            </CardTitle>
-
-
+            <div className="space-y-1">
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                {isSuperAdminLogin ? "Super Admin" : "School ERP"}
+              </p>
+              <CardTitle className="text-3xl font-semibold text-slate-900">
+                {isSuperAdminLogin ? "Welcome back." : "Sign in to continue."}
+              </CardTitle>
+            </div>
+            <CardDescription className="text-sm text-slate-500">
+              Minimal, focused, and designed for clarity across every workflow.
+            </CardDescription>
           </CardHeader>
 
-          {/* Form */}
           <form onSubmit={handleLogin}>
-            <CardContent className="space-y-2 px-14">
-
-              {/* Error Message */}
+            <CardContent className="space-y-5 px-8 pb-2 pt-6">
               {error && (
-                <div className="p-3 rounded-lg bg-red-100 border border-red-400 text-red-700 text-sm">
+                <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-600">
                   {error}
                 </div>
               )}
 
-              {/* Role - Hidden for super admin */}
               {!isSuperAdminLogin && (
                 <div className="space-y-2">
-                  <Label className="text-md font-medium text-blue-700">
+                  <Label className="text-sm font-medium text-slate-700">
                     Select Role
                   </Label>
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    className="
-                    w-full h-12 rounded-lg 
-                    border border-blue-300 
-                    bg-white px-4 text-base
-                    focus:outline-none focus:ring-2 focus:ring-blue-500
-                  "
+                    className="h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10"
                   >
                     <option value="admin">Admin</option>
                     <option value="teacher">Teacher</option>
@@ -156,74 +142,70 @@ export default function Login() {
                 </div>
               )}
 
-              {/* Email/Identifier */}
-              <div className="space-y-1">
-                <Label className="text-sm font-medium text-blue-700">
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-slate-700">
                   {isSuperAdminLogin ? "Email Address" : "Email / Mobile"}
                 </Label>
                 <Input
                   type={isSuperAdminLogin ? "email" : "text"}
-                  placeholder={isSuperAdminLogin ? "Enter your email" : "Enter email, mobile, or ID"}
+                  placeholder={
+                    isSuperAdminLogin
+                      ? "name@school.edu"
+                      : "Email, mobile, or ID"
+                  }
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-12 w-full px-4 text-base focus-visible:ring-blue-500"
+                  className="h-12 w-full rounded-2xl border-slate-200 px-4 text-sm shadow-sm focus-visible:ring-slate-900/10"
                 />
               </div>
 
-              {/* Password */}
-              <div className="space-y-1">
-                <Label className="text-sm font-medium text-blue-700">
-                  {isSuperAdminLogin ? "Password" : "Password / DOB / Generated Code"}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-slate-700">
+                  {isSuperAdminLogin
+                    ? "Password"
+                    : "Password / DOB / Generated Code"}
                 </Label>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
-                    placeholder={isSuperAdminLogin ? "Enter your password" : "Student: YYYY-MM-DD | Parent: Auto-generated code"}
+                    placeholder={
+                      isSuperAdminLogin
+                        ? "Enter your password"
+                        : "Student: YYYY-MM-DD | Parent: Auto-generated"
+                    }
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 w-full px-4 pr-12 text-base focus-visible:ring-blue-500"
+                    className="h-12 w-full rounded-2xl border-slate-200 px-4 pr-12 text-sm shadow-sm focus-visible:ring-slate-900/10"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-700 transition"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-700"
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
               </div>
-
             </CardContent>
 
-            {/* Footer */}
-            <CardFooter className="px-14 pt-2 pb-10">
+            <CardFooter className="px-8 pb-8 pt-4">
               <motion.div
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.96 }}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
                 className="w-full"
               >
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="
-                  w-full h-12 text-lg font-semibold 
-                  bg-gradient-to-r from-blue-600 to-indigo-600 
-                  hover:from-blue-700 hover:to-indigo-700 
-                  text-white rounded-xl 
-                  shadow-lg hover:shadow-xl 
-                  transition-all
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                "
+                  className="h-12 w-full rounded-2xl bg-slate-900 text-sm font-semibold text-white shadow-lg shadow-slate-900/15 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {loading ? "Signing In..." : "Sign In"}
                 </Button>
               </motion.div>
             </CardFooter>
           </form>
-
         </Card>
       </motion.div>
     </div>
   );
-
 }
